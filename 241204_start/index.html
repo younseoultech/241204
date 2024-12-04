@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>차원 여행</title>
+  <style>
+    @font-face {
+      font-family: 'SUIT-Regular';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: white;
+      font-family: 'SUIT-Regular', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    #image-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .start-image {
+      width: 150px;
+      height: auto;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;   
+      border: 2px solid white;
+      border-radius: 10px;
+      transition: transform 0.3s ease, border 0.3s ease;
+    }
+
+    .start-image:hover {
+      transform: scale(1.1);
+      border: 2px solid #00ffcc;
+    }
+
+    .title {
+      font-size: 36px;
+      margin-top: 20px;
+    }
+
+    #text-container {
+      display: none;
+      position: relative;
+      height: 60%; /* 텍스트 컨테이너의 높이 설정 */
+      width: 80%;
+    }
+
+    .text {
+      font-size: 18px;
+      margin: 0;
+      opacity: 0;
+      position: absolute; /* 텍스트를 중앙에 고정 */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.5s ease;
+    }
+
+    .text.active {
+      opacity: 1;
+    }
+
+    .button-container {
+      margin-top: 20px; /* 버튼과 문장 사이 간격 추가 */
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      position: absolute;
+      bottom: 0; /* 버튼을 컨테이너 하단에 고정 */
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: black;
+      background: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-block;
+      text-align: center;
+    }
+
+    button:disabled {
+      background: #666;
+      color: #ccc;
+      cursor: not-allowed;
+    }
+
+    button:hover:enabled {
+      background: #00ffcc;
+    }
+  </style>
+</head>
+<body>
+  <!-- 첫 화면 -->
+  <div id="image-container" onclick="startJourney()">
+    <img src="image.png" alt="Start Button" class="start-image">
+    <div class="title">차원 여행</div>
+  </div>
+
+  <!-- 텍스트 화면 -->
+  <div id="text-container">
+    <div class="text" id="text-1">안녕하세요. 차원 여행 전, 여행과 관련 간단한 설명을 해드리겠습니다.</div>
+    <div class="text" id="text-2">이번 여행은 점으로 이루어진 0차원, 선으로 표현되는 1차원, 면으로 표현되는 2차원을 지나</div>
+    <div class="text" id="text-3">우리가 익히 알고 있는 3차원 공간</div>
+    <div class="text" id="text-4">그리고 3차원 공간에 1차원 시간이 더해진 4차원 시공간 순서로 진행됩니다.</div>
+    <div class="text" id="text-5">차원 여행을 체험하면서 지금 우리가 살아가는 시공간에 집중해보세요.</div>
+    <div class="button-container">
+      <button id="prev-button" onclick="prevText()" disabled>이전</button>
+      <button id="next-button" onclick="nextText()">다음</button>
+    </div>
+  </div>
+
+  <script>
+    let currentTextIndex = 0;
+    const totalTexts = 5;
+
+    function startJourney() {
+      // 첫 화면 숨기기
+      document.getElementById('image-container').style.display = 'none';
+
+      // 텍스트 화면 보이기
+      document.getElementById('text-container').style.display = 'block';
+
+      // 첫 텍스트 표시
+      showText(currentTextIndex);
+    }
+
+    function showText(index) {
+      const textElements = document.querySelectorAll('.text');
+      textElements.forEach((el, i) => {
+        if (i === index) {
+          el.classList.add('active');
+        } else {
+          el.classList.remove('active');
+        }
+      });
+
+      // 버튼 상태 업데이트
+      document.getElementById('prev-button').disabled = index === 0;
+      document.getElementById('next-button').textContent = index === totalTexts - 1 ? '시작하기' : '다음';
+    }
+
+    function nextText() {
+      if (currentTextIndex < totalTexts - 1) {
+        currentTextIndex++;
+        showText(currentTextIndex);
+      } else {
+        // 모든 텍스트가 끝난 경우, 주어진 URL로 이동
+        window.location.href = 'https://younseoultech.github.io/test_3d/';
+      }
+    }
+
+    function prevText() {
+      if (currentTextIndex > 0) {
+        currentTextIndex--;
+        showText(currentTextIndex);
+      }
+    }
+  </script>
+</body>
+</html>
